@@ -15,7 +15,8 @@ def checkout(skus):
         "B": {2: 45},
     }
     freebies_offers = {
-        "E": [2, "B"],
+        # Product: Amount, Freebie_Product, Freebie_Amount
+        "E": [2, "B", 1],
     }
 
     processed_dict = defaultdict(lambda: 0)
@@ -34,7 +35,7 @@ def checkout(skus):
                 # If discount is appliable
                 if (
                     item in discount_offers.keys()
-                    and amount // discount_offers[item][0]
+                    and processed_dict[item] // discount_offers[item][0]
                 ):
                     processed_dict[item] -= discount_offers[item][0]
                     total += discount_offers[item][1]
@@ -42,8 +43,9 @@ def checkout(skus):
                 # If feebie is valid
                 elif (
                     item in freebies_offers.keys()
-                    and amount // freebies_offers[item][0]
-                    and 
+                    and processed_dict[item] // freebies_offers[item][0]
+                    # if products left
+                    and processed_dict[freebies_offers[item][1]] // freebies_offers[item][2]
                 ):
                 else:
                     total += amount * products[item]
@@ -56,6 +58,7 @@ def checkout(skus):
 
 
 print(checkout("AAAEEBB"))
+
 
 
 
