@@ -70,12 +70,18 @@ def process_anies(cart, total):
         offer_price = offer[1]
         offer_applied_times = suitable_items_amount // offer_amount
 
-        # ! GET ITEM ORDER FROM CHEEPEST TO MOST EXPENSIVE
+        # GET ITEM ORDER FROM THE MOST EXPENSIVE TO CHEAPEST
+        discounted_items = {}
         for item in list(target_items):
-            suitable_items_amount += cart[item]
-        
+            discounted_items[item] = PRODUCT_PRICES.get(item)
+
+        discount_items_order = sorted(
+            discounted_items, key=discounted_items.get, reverse=True
+        )
+
         while offer_applied_times > 0:
-            for item in list(items_set):
+            i = offer_amount
+            for item in discount_items_order:
                 discounted_items = cart[item] - i
                 if discounted_items < 0:
                     cart[item] = 0
@@ -145,5 +151,6 @@ def checkout(skus):
 
 
 print(checkout("STX"))
+
 
 
