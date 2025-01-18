@@ -85,12 +85,12 @@ def process_anies(cart, total):
             while i > 0:
                 apply_discount_to = discount_items_order[j]
 
-                discounted_items = cart[item] - i
+                discounted_items = cart[apply_discount_to] - i
                 if discounted_items < 0:
-                    cart[item] = 0
+                    cart[apply_discount_to] = 0
                     i = abs(discounted_items)
                 else:
-                    cart[item] -= i
+                    cart[apply_discount_to] -= i
                     i = 0
 
                 j += 1
@@ -156,8 +156,6 @@ def checkout(skus):
 
     return total
 
-
-print(checkout("STXZ"))
 
 
 

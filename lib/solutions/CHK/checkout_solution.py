@@ -51,7 +51,54 @@ FREEBIES_OFFERS = {
     "U": [3, "U", 1],
 }
 
-ANIES_OFFERS = {("S", "T", "X", "Y", "Z"): [3, 45]}
+ANIES_OFFERS = {
+    # Any of these: Amount, price
+    ("S", "T", "X", "Y", "Z"): [3, 45],
+}
+
+
+def process_anies(cart, total):
+    for items_set, offer in ANIES_OFFERS.items():
+        # > IF discount can be applied
+        target_items = set(cart.keys()).intersection(items_set)
+
+        suitable_items_amount = 0
+        for item in list(target_items):
+            suitable_items_amount += cart[item]
+
+        offer_amount = offer[0]
+        offer_price = offer[1]
+        offer_applied_times = suitable_items_amount // offer_amount
+
+        # GET ITEM ORDER FROM THE MOST EXPENSIVE TO CHEAPEST
+        discounted_items = {}
+        for item in list(target_items):
+            discounted_items[item] = PRODUCT_PRICES.get(item)
+
+        discount_items_order = sorted(
+            discounted_items, key=discounted_items.get, reverse=True
+        )
+
+        while offer_applied_times > 0:
+            i = offer_amount
+            j = 0
+            while i > 0:
+                apply_discount_to = discount_items_order[j]
+
+                discounted_items = cart[apply_discount_to] - i
+                if discounted_items < 0:
+                    cart[apply_discount_to] = 0
+                    i = abs(discounted_items)
+                else:
+                    cart[apply_discount_to] -= i
+                    i = 0
+
+                j += 1
+
+            total += offer_price
+            offer_applied_times -= 1
+
+    return total, cart
 
 
 def process_freebies(cart, total):
@@ -61,22 +108,19 @@ def process_freebies(cart, total):
             if item == freebie_product:
                 item_amount_required += freebies_amount
 
-            while True:
-                if (
-                    cart[item] // item_amount_required
-                    and cart[freebie_product] // freebies_amount
-                ):
-                    if item == freebie_product:
-                        total += (
-                            item_amount_required - freebies_amount
-                        ) * PRODUCT_PRICES[item]
-                        cart[item] -= item_amount_required
-                    else:
-                        total += item_amount_required * PRODUCT_PRICES[item]
-                        cart[item] -= item_amount_required
-                        cart[freebie_product] -= freebies_amount
+            while (
+                cart[item] // item_amount_required
+                and cart[freebie_product] // freebies_amount
+            ):
+                if item == freebie_product:
+                    total += (item_amount_required - freebies_amount) * PRODUCT_PRICES[
+                        item
+                    ]
+                    cart[item] -= item_amount_required
                 else:
-                    break
+                    total += item_amount_required * PRODUCT_PRICES[item]
+                    cart[item] -= item_amount_required
+                    cart[freebie_product] -= freebies_amount
 
     return total, cart
 
@@ -85,12 +129,10 @@ def process_discounts(cart, total):
     for item, offers in DISCOUNT_OFFERS.items():
         if item in cart.keys():
             for item_amount_required, discount_price in offers:
-                while True:
-                    if cart[item] // item_amount_required:
-                        cart[item] -= item_amount_required
-                        total += discount_price
-                    else:
-                        break
+                while cart[item] // item_amount_required:
+                    cart[item] -= item_amount_required
+                    total += discount_price
+
     return total, cart
 
 
@@ -104,15 +146,13 @@ def checkout(skus):
     cart = defaultdict(lambda: 0)
     total = 0
 
-    try:
-        for i in skus:
-            cart[i] += 1
+    for i in skus:
+        cart[i] += 1
 
-        total, cart = process_freebies(cart, total)
-        total, cart = process_discounts(cart, total)
-        total, cart = process_cart(cart, total)
-
-    except Exception as e:
-        total = -1
+    total, cart = process_anies(cart, total)
+    total, cart = process_freebies(cart, total)
+    total, cart = process_discounts(cart, total)
+    total, cart = process_cart(cart, total)
 
     return total
+
