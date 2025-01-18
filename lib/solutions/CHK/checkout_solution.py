@@ -9,8 +9,13 @@ def checkout(skus):
         "D": 15,
         " ": 0,
     }
+    total = -1
+    try:
+        for item in skus:
+            total += products[item]
 
-    if is_illegal:
-        return -1
+    except Exception:
+        pass
 
-    raise NotImplementedError()
+    return total
+
