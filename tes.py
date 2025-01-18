@@ -7,11 +7,12 @@ def checkout(skus):
         "B": 30,
         "C": 20,
         "D": 15,
+        "E": 40,
     }
     offers = {
-        # Item: [Amount, Total]
-        "A": [3, 130],
-        "B": [2, 45],
+        # Item: {Amount, New_Total}
+        "A": {3, 130}, {5: 200},
+        "B": {2, 45},
     }
     processed_dict = defaultdict(lambda: 0)
     total = 0
@@ -36,3 +37,4 @@ def checkout(skus):
 
 
 print(checkout("a"))
+
