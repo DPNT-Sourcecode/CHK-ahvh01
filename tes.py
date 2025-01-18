@@ -20,19 +20,16 @@ def checkout(skus):
     }
     processed_dict = defaultdict(lambda: 0)
     total = 0
+
     try:
         for i in skus:
             processed_dict[i] += 1
 
         for item, amount in processed_dict.items():
             while True:
-                if item in offers.keys():
-                    if amount // offers[item][0]:
-                        amount -= offers[item][0]
-                        total += offers[item][1]
-                    elif not amount // offers[item][0]:
-                        total += amount * products[item]
-                        break
+                if item in offers.keys() and amount // offers[item][0]:
+                    amount -= offers[item][0]
+                    total += offers[item][1]
                 else:
                     total += amount * products[item]
                     break
@@ -43,5 +40,6 @@ def checkout(skus):
     return total
 
 
-print(checkout("ABCDCBAABCABBAAA"))
+print(checkout("AB"))
+
 
