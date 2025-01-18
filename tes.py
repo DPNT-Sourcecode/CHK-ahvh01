@@ -64,9 +64,14 @@ def process_anies(cart, total):
         suitable_items_amount = 0
         for item in list(items_set):
             suitable_items_amount += cart[item]
-        
-        if suitable_items_amount // offer[3]:
-            
+
+        offer_amount = offer[0]
+        offer_price = offer[1]
+        while suitable_items_amount // offer_amount:
+            i = 3
+            for item in list(items_set):
+                cart[item]
+            total += offer[1]
 
     return total, cart
 
@@ -78,22 +83,19 @@ def process_freebies(cart, total):
             if item == freebie_product:
                 item_amount_required += freebies_amount
 
-            while True:
-                if (
-                    cart[item] // item_amount_required
-                    and cart[freebie_product] // freebies_amount
-                ):
-                    if item == freebie_product:
-                        total += (
-                            item_amount_required - freebies_amount
-                        ) * PRODUCT_PRICES[item]
-                        cart[item] -= item_amount_required
-                    else:
-                        total += item_amount_required * PRODUCT_PRICES[item]
-                        cart[item] -= item_amount_required
-                        cart[freebie_product] -= freebies_amount
+            while (
+                cart[item] // item_amount_required
+                and cart[freebie_product] // freebies_amount
+            ):
+                if item == freebie_product:
+                    total += (item_amount_required - freebies_amount) * PRODUCT_PRICES[
+                        item
+                    ]
+                    cart[item] -= item_amount_required
                 else:
-                    break
+                    total += item_amount_required * PRODUCT_PRICES[item]
+                    cart[item] -= item_amount_required
+                    cart[freebie_product] -= freebies_amount
 
     return total, cart
 
@@ -102,12 +104,10 @@ def process_discounts(cart, total):
     for item, offers in DISCOUNT_OFFERS.items():
         if item in cart.keys():
             for item_amount_required, discount_price in offers:
-                while True:
-                    if cart[item] // item_amount_required:
-                        cart[item] -= item_amount_required
-                        total += discount_price
-                    else:
-                        break
+                while cart[item] // item_amount_required:
+                    cart[item] -= item_amount_required
+                    total += discount_price
+
     return total, cart
 
 
@@ -133,6 +133,7 @@ def checkout(skus):
         total = -1
 
     return total
+
 
 
 
