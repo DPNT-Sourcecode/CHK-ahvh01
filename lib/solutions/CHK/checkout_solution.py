@@ -6,7 +6,7 @@ from collections import defaultdict
 def checkout(skus):
     if not skus:
         return -1
-    
+
     skus = skus.upper()
 
     products = {
@@ -20,27 +20,31 @@ def checkout(skus):
         "A": [3, 130],
         "B": [2, 45],
     }
-    processed_dict = defaultdict(0)
+    processed_dict = defaultdict(lambda: 0)
     total = 0
+
     try:
         for i in skus:
             processed_dict[i] += 1
 
         for item, amount in processed_dict.items():
-            while True
-                if item in offers.keys() and amount // offers[item][0]:
-                    amount -= offers[item][0]
-                    total += offers[item][1]
-
-                elif not amount // offers[item][0]:
+            while True:
+                if item in offers.keys():
+                    if amount // offers[item][0]:
+                        amount -= offers[item][0]
+                        total += offers[item][1]
+                    elif not amount // offers[item][0]:
+                        total += amount * products[item]
+                        break
+                else:
                     total += amount * products[item]
                     break
-                
 
-    except Exception:
+    except Exception as e:
         total = -1
 
     return total
+
 
 
 
