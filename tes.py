@@ -89,7 +89,8 @@ def process_anies(cart, total):
                 else:
                     cart[item] -= i
 
-                total += offer_price
+            total += offer_price
+            offer_applied_times -= 1
 
     return total, cart
 
@@ -150,7 +151,8 @@ def checkout(skus):
     return total
 
 
-print(checkout("STX"))
+print(checkout("STXZ"))
+
 
 
 
