@@ -38,14 +38,18 @@ DISCOUNT_OFFERS = {
     "B": [[2, 45]],
     "H": [[5, 45], [10, 80]],
     "K": [[2000, 150]],
-    ""
+    "P": [[5, 200]],
+    "Q": [[3, 80]],
+    "V": [[2, 90], [3, 130]],
 }
 
 FREEBIES_OFFERS = {
     # Product: Amount, Freebie_Product, Freebie_Amount
     "E": [2, "B", 1],
-    "F": [3, "F", 1],
-    "N": [3, "M", 1] 
+    "F": [2, "F", 1],
+    "N": [3, "M", 1],
+    "R": [3, "Q", 1],
+    "U": [3, "U", 1],
 }
 
 
@@ -54,11 +58,14 @@ def process_freebies(cart, total):
         if cart.get(item):
             item_amount_required, freebie_product, freebies_amount = offer
             while True:
+                if item == freebie_product:
+                    item_amount_required += freebies_amount
+
                 if (
                     cart[item] // item_amount_required
                     and cart[freebie_product] // freebies_amount
                 ):
-                    if item == "F":
+                    if item == freebie_product:
                         total += (
                             item_amount_required - freebies_amount
                         ) * PRODUCT_PRICES[item]
@@ -108,6 +115,7 @@ def checkout(skus):
         total = -1
 
     return total
+
 
 
 
