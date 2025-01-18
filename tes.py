@@ -2,11 +2,6 @@ from collections import defaultdict
 
 
 def checkout(skus):
-    if not skus:
-        return -1
-
-    skus = skus.upper()
-
     products = {
         "A": 50,
         "B": 30,
@@ -40,6 +35,7 @@ def checkout(skus):
     return total
 
 
-print(checkout("AB"))
+print(checkout("a"))
+
 
 
