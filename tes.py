@@ -9,13 +9,14 @@ def checkout(skus):
         "D": 15,
         "E": 40,
     }
-    offers = {
+    discount_offers = {
         # Item: {Amount, New_Total}
         "A": {3: 130, 5: 200},
         "B": {2: 45},
-        "E": {2: -
     }
-    # ! E OFFER???
+    freebies_offers = {
+        "E": [2, "B"],
+    }
 
     processed_dict = defaultdict(lambda: 0)
     total = 0
@@ -30,9 +31,20 @@ def checkout(skus):
 
         for item in items_order:
             while True:
-                if item in offers.keys() and amount // offers[item][0]:
-                    processed_dict[item] -= offers[item][0]
-                    total += offers[item][1]
+                # If discount is appliable
+                if (
+                    item in discount_offers.keys()
+                    and amount // discount_offers[item][0]
+                ):
+                    processed_dict[item] -= discount_offers[item][0]
+                    total += discount_offers[item][1]
+
+                # If feebie is valid
+                elif (
+                    item in freebies_offers.keys()
+                    and amount // freebies_offers[item][0]
+                    and 
+                ):
                 else:
                     total += amount * products[item]
                     break
@@ -44,6 +56,7 @@ def checkout(skus):
 
 
 print(checkout("AAAEEBB"))
+
 
 
 
