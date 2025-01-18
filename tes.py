@@ -81,13 +81,19 @@ def process_anies(cart, total):
 
         while offer_applied_times > 0:
             i = offer_amount
-            for item in discount_items_order:
+            j = 0
+            while i > 0:
+                apply_discount_to = discount_items_order[j]
+
                 discounted_items = cart[item] - i
                 if discounted_items < 0:
                     cart[item] = 0
                     i = abs(discounted_items)
                 else:
                     cart[item] -= i
+                    i = 0
+
+                j += 1
 
             total += offer_price
             offer_applied_times -= 1
@@ -152,6 +158,7 @@ def checkout(skus):
 
 
 print(checkout("STXZ"))
+
 
 
 
