@@ -24,14 +24,16 @@ def process_freebies(cart, total):
     for item, offer in FREEBIES_OFFERS.items():
         if cart.get(item):
             item_amount_required, freebie_product, freebies_amount = offer
-
-            if (
-                cart[item] // item_amount_required
-                and cart[freebie_product] // freebies_amount
-            ):
-                total += item_amount_required * PRODUCT_PRICES[item]
-                cart[item] -= item_amount_required
-                cart[freebie_product] -= freebies_amount
+            while True:
+                if (
+                    cart[item] // item_amount_required
+                    and cart[freebie_product] // freebies_amount
+                ):
+                    total += item_amount_required * PRODUCT_PRICES[item]
+                    cart[item] -= item_amount_required
+                    cart[freebie_product] -= freebies_amount
+                else:
+                    break
 
     return total, cart
 
@@ -71,11 +73,4 @@ def checkout(skus):
         total = -1
 
     return total
-
-
-
-
-
-
-
 
