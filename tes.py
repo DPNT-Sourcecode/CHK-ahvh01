@@ -10,9 +10,9 @@ def checkout(skus):
         "E": 40,
     }
     discount_offers = {
-        # Item: {Amount, New_Total}
-        "A": {3: 130, 5: 200},
-        "B": {2: 45},
+        # Item: [[Amount, New_Total], ...]
+        "A": [[5, 200], [3, 130]],
+        "B": [[2: 45]],
     }
     freebies_offers = {
         # Product: Amount, Freebie_Product, Freebie_Amount
@@ -50,11 +50,9 @@ def checkout(skus):
 
             # If discount is appliable
             elif item in discount_offers.keys():
-                # Start with biggest
-                offers = list(discount_offers.keys())
-                offers.sort(reverse=True)
+                possible_offers = discount_offers[item]
                 
-                for offer in offers:
+                for offer in possible_offers:
                     item_amount_required = discount_offers[item][0]
                     discount_price = discount_offers[item][1]
 
@@ -76,4 +74,5 @@ def checkout(skus):
 
 
 print(checkout("AAAEEBB"))
+
 
