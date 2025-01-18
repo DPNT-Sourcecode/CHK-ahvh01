@@ -16,7 +16,7 @@ def checkout(skus):
     offers = {
         # Item: [Amount, Total]
         "A": [3, 130],
-        "B": [2, 45],   
+        "B": [2, 45],
     }
     processed_dict = defaultdict(0)
     total = 0
@@ -25,8 +25,15 @@ def checkout(skus):
             processed_dict[i] += 1
 
         for item, amount in processed_dict.items():
-            if item in offers.keys():
-                amount % offers
+            while True
+                if item in offers.keys() and amount // offers[item][0]:
+                    amount -= offers[item][0]
+                    total += offers[item][1]
+                    
+                elif not amount // offers[item][0]:
+                    total += amount * products[item]
+                    break
+                
 
     except Exception:
         total = -1
