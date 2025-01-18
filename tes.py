@@ -58,15 +58,16 @@ ANIES_OFFERS = {
 
 
 def process_anies(cart, total):
-    for items_set, offer in FREEBIES_OFFERS.items():
+    for items_set, offer in ANIES_OFFERS.items():
         discount_appliable = False
-        cart.keys()
-        
-        
-        suitable_items_amount = 0
-        for item in list(items_set):
+
+        # > IF discount can be applied
+        target_items = set(cart.keys()).intersection(items_set)
+
+        for item in list(target_items):
             suitable_items_amount += cart[item]
 
+        suitable_items_amount = 0
         offer_amount = offer[0]
         offer_price = offer[1]
         offer_applied_times = suitable_items_amount // offer_amount
@@ -144,3 +145,4 @@ def checkout(skus):
 
 
 print(checkout("STX"))
+
