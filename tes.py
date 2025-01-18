@@ -31,34 +31,30 @@ def checkout(skus):
         items_order.sort(reverse=True)
 
         for item in items_order:
-            amount = amount
+            amount = processed_dict[item]
             while True:
                 # If feebie is valid
                 if item in freebies_offers.keys():
 
                     item_amount_required = freebies_offers[item][0]
-                    freebie_product = freebies_offers[item][1]]
+                    freebie_product = freebies_offers[item][1]
                     freebies_amount = freebies_offers[item][2]
                     if (
                         amount // item_amount_required
-                        and freebie_product_in_cart // freebies_amount
+                        and processed_dict[freebie_product] // freebies_amount
                     ):
                         total += amount * products_prices[item]
-                        total -= (
-                            freebies_offers[item][2]
-                            * products_prices[freebies_offers[item][1]]
-                        )
-                        processed_dict[freebies_offers[item][1]] -= freebies_offers[
-                            item
-                        ][2]
+                        total -= freebies_amount * products_prices[freebie_product]
+                        processed_dict[freebie_product] -= freebies_amount
 
                 # If discount is appliable
-                elif (
-                    item in discount_offers.keys()
-                    and amount // discount_offers[item][0]
-                ):
-                    amount -= discount_offers[item][0]
-                    total += discount_offers[item][1]
+                elif item in discount_offers.keys():
+                    item_amount_required = discount_offers[item][0]
+                    discount_price = discount_offers[item][1]
+
+                    if amount // item_amount_required:
+                        amount -= item_amount_required
+                        total += discount_price
 
                 else:
                     total += amount * products_prices[item]
@@ -71,6 +67,7 @@ def checkout(skus):
 
 
 print(checkout("AAAEEBB"))
+
 
 
 
