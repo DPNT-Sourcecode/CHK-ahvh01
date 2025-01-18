@@ -71,20 +71,21 @@ def checkout(skus):
     cart = defaultdict(lambda: 0)
     total = 0
 
-    # try:
-    for i in skus:
-        cart[i] += 1
+    try:
+        for i in skus:
+            cart[i] += 1
 
-    total, cart = process_freebies(cart, total)
-    total, cart = process_discounts(cart, total)
-    total, cart = process_cart(cart, total)
+        total, cart = process_freebies(cart, total)
+        total, cart = process_discounts(cart, total)
+        total, cart = process_cart(cart, total)
 
-    # except Exception as e:
-    #     total = -1
+    except Exception as e:
+        total = -1
 
     return total
 
 
-print(checkout("FFEEB"))
+print(checkout("EEB"))
+
 
 

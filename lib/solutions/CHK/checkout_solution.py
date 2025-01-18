@@ -33,7 +33,7 @@ def process_freebies(cart, total):
                     cart[item] // item_amount_required
                     and cart[freebie_product] // freebies_amount
                 ):
-                    if timem == "F":
+                    if item == "F":
                         total += (
                             item_amount_required - freebies_amount
                         ) * PRODUCT_PRICES[item]
@@ -83,4 +83,5 @@ def checkout(skus):
         total = -1
 
     return total
+
 
