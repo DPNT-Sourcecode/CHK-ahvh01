@@ -57,10 +57,10 @@ def process_freebies(cart, total):
     for item, offer in FREEBIES_OFFERS.items():
         if cart.get(item):
             item_amount_required, freebie_product, freebies_amount = offer
-            while True:
-                if item == freebie_product:
-                    item_amount_required += freebies_amount
+            if item == freebie_product:
+                item_amount_required += freebies_amount
 
+            while True:
                 if (
                     cart[item] // item_amount_required
                     and cart[freebie_product] // freebies_amount
@@ -103,20 +103,18 @@ def checkout(skus):
     cart = defaultdict(lambda: 0)
     total = 0
 
-    try:
-        for i in skus:
-            cart[i] += 1
+    # try:
+    for i in skus:
+        cart[i] += 1
 
-        total, cart = process_freebies(cart, total)
-        total, cart = process_discounts(cart, total)
-        total, cart = process_cart(cart, total)
+    total, cart = process_freebies(cart, total)
+    total, cart = process_discounts(cart, total)
+    total, cart = process_cart(cart, total)
 
-    except Exception as e:
-        total = -1
+    # except Exception as e:
+    #     total = -1
 
     return total
 
 
-
-
-
+print(checkout("UUUUUUUU"))
