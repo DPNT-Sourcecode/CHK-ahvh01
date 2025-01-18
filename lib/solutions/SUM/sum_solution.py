@@ -5,4 +5,3 @@ def compute(x, y):
         return x + y
 
     return sum(x, y)
-
