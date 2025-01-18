@@ -9,22 +9,17 @@ def checkout(skus):
         "D": 15,
         "E": 40,
     }
-    discount_offers = {
-        # Item: [[Amount, New_Total], ...]
-        "A": [[5, 200], [3, 130]],
-        "B": [[2, 45]],
-    }
     
 
-    processed_dict = defaultdict(lambda: 0)
+    cart = defaultdict(lambda: 0)
     total = 0
 
-    def process_freebies(cart):
+    def process_freebies(cart, total):
         freebies_offers = {
             # Product: Amount, Freebie_Product, Freebie_Amount
             "E": [2, "B", 1],
         }
-        
+    
         for item, offer in freebies_offers.items():
             if cart.get(item):
                 item_amount_required, freebie_product, freebies_amount = offer
@@ -34,8 +29,24 @@ def checkout(skus):
                 ):
                     total += amount * cart[item]
                     cart[freebie_product] -= freebies_amount
-                else:
-                    break
+        
+        return total, cart
+
+    
+    def process_discounts(cart, total):
+        discount_offers = {
+            # Item: [[Amount, New_Total], ...]
+            "A": [[5, 200], [3, 130]],
+            "B": [[2, 45]],
+        }
+        
+        for item, offers in discount_offers.items():
+            if item in discount_offers.keys():
+                for item_amount_required, discount_price in offers:
+                    while True:
+                        if amount // item_amount_required:
+                            amount -= item_amount_required
+                            total += discount_price
                 
         
         
@@ -43,36 +54,23 @@ def checkout(skus):
 
     try:
         for i in skus:
-            processed_dict[i] += 1
-            
-
-        # ? Workaround: Always start with E products_prices first
-        items_order = list(processed_dict.keys())
-        items_order.sort(reverse=True)
+            cart[i] += 1
         
         # ! PROCESS FREEBIES
+        total, cart = process_freebies(cart, total)
         # ! PROCESS DISCOUNTS
+        total, cart = process_discounts(cart, total)
+            
+        
         # ! PROCESS REST
 
         for item in items_order:
-            amount = processed_dict[item]
+            amount = cart[item]
             while True:
-                # If feebie is valid
-                if item in freebies_offers.keys():
                     
 
                 # If discount is appliable
-                elif item in discount_offers.keys():
-                    possible_offers = discount_offers[item]
-                    for item_amount_required, discount_price in possible_offers:
-                        while True:
-                            if amount // item_amount_required:
-                                amount -= item_amount_required
-                                total += discount_price
-                            else:
-                                break
-                    else:
-                        break
+                el
 
                 else:
                     total += amount * products_prices[item]
@@ -85,6 +83,7 @@ def checkout(skus):
 
 
 print(checkout("EEB"))
+
 
 
 
