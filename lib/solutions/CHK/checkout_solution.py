@@ -6,6 +6,8 @@ from collections import defaultdict
 def checkout(skus):
     if not skus:
         return -1
+    
+    skus = skus.upper()
 
     products = {
         "A": 50,
@@ -29,7 +31,7 @@ def checkout(skus):
                 if item in offers.keys() and amount // offers[item][0]:
                     amount -= offers[item][0]
                     total += offers[item][1]
-                    
+
                 elif not amount // offers[item][0]:
                     total += amount * products[item]
                     break
@@ -39,6 +41,7 @@ def checkout(skus):
         total = -1
 
     return total
+
 
 
 
