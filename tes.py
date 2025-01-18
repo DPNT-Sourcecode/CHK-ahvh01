@@ -50,8 +50,10 @@ def checkout(skus):
 
             # If discount is appliable
             elif item in discount_offers.keys():
-                items_order = list(processed_dict.keys())
-    items_order.sort(reverse=True)
+                # Start with biggest
+                offers = list(discount_offers.keys())
+                offers.sort(reverse=True)
+                
                 for offer in offers:
                     item_amount_required = discount_offers[item][0]
                     discount_price = discount_offers[item][1]
@@ -74,3 +76,4 @@ def checkout(skus):
 
 
 print(checkout("AAAEEBB"))
+
