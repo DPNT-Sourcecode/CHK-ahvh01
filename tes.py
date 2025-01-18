@@ -11,9 +11,11 @@ def checkout(skus):
     }
     offers = {
         # Item: {Amount, New_Total}
-        "A": {3, 130}, {5: 200},
+        "A": {3: 130, 5: 200},
         "B": {2, 45},
     }
+    # ! E OFFER???
+
     processed_dict = defaultdict(lambda: 0)
     total = 0
 
@@ -21,6 +23,8 @@ def checkout(skus):
         for i in skus:
             processed_dict[i] += 1
 
+        items_order = list(processed_dict.keys())
+        items_order.sort(reverse=True)
         for item, amount in processed_dict.items():
             while True:
                 if item in offers.keys() and amount // offers[item][0]:
@@ -36,5 +40,6 @@ def checkout(skus):
     return total
 
 
-print(checkout("a"))
+print(checkout("AAAEEBB"))
+
 
