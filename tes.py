@@ -22,51 +22,56 @@ def checkout(skus):
     processed_dict = defaultdict(lambda: 0)
     total = 0
 
-    try:
-        for i in skus:
-            processed_dict[i] += 1
+    # try:
+    for i in skus:
+        processed_dict[i] += 1
 
-        # ? Workaround: Always start with E products_prices first
-        items_order = list(processed_dict.keys())
-        items_order.sort(reverse=True)
+    # ? Workaround: Always start with E products_prices first
+    items_order = list(processed_dict.keys())
+    items_order.sort(reverse=True)
 
-        for item in items_order:
-            amount = processed_dict[item]
-            while True:
-                # If feebie is valid
-                if item in freebies_offers.keys():
-
-                    item_amount_required = freebies_offers[item][0]
-                    freebie_product = freebies_offers[item][1]
-                    freebies_amount = freebies_offers[item][2]
-                    if (
-                        amount // item_amount_required
-                        and processed_dict[freebie_product] // freebies_amount
-                    ):
-                        total += amount * products_prices[item]
-                        total -= freebies_amount * products_prices[freebie_product]
-                        processed_dict[freebie_product] -= freebies_amount
-
-                # If discount is appliable
-                elif item in discount_offers.keys():
-                    item_amount_required = discount_offers[item][0]
-                    discount_price = discount_offers[item][1]
-
-                    if amount // item_amount_required:
-                        amount -= item_amount_required
-                        total += discount_price
-
-                else:
+    for item in items_order:
+        amount = processed_dict[item]
+        while True:
+            # If feebie is valid
+            if item in freebies_offers.keys():
+                item_amount_required = freebies_offers[item][0]
+                freebie_product = freebies_offers[item][1]
+                freebies_amount = freebies_offers[item][2]
+                if (
+                    amount // item_amount_required
+                    and processed_dict[freebie_product] // freebies_amount
+                ):
                     total += amount * products_prices[item]
+                    total -= freebies_amount * products_prices[freebie_product]
+                    processed_dict[freebie_product] -= freebies_amount
+                else:
                     break
 
-    except Exception as e:
-        total = -1
+            # If discount is appliable
+            elif item in discount_offers.keys():
+                item_amount_required = discount_offers[item][0]
+                discount_price = discount_offers[item][1]
+
+                if amount // item_amount_required:
+                    amount -= item_amount_required
+                    total += discount_price
+
+                else:
+                    break
+
+            else:
+                total += amount * products_prices[item]
+                break
+
+    # except Exception as e:
+    #     total = -1
 
     return total
 
 
 print(checkout("AAAEEBB"))
+
 
 
 
