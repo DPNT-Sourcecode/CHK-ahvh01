@@ -67,11 +67,16 @@ def process_anies(cart, total):
 
         offer_amount = offer[0]
         offer_price = offer[1]
-        while suitable_items_amount // offer_amount:
-            i = 3
-            for item in list(items_set):
-                cart[item]
-            total += offer[1]
+        offer_applied_times = suitable_items_amount // offer_amount
+        for item in list(items_set):
+            discounted_items = cart[item] - i
+            if discounted_items < 0:
+                cart[item] = 0
+                i = abs(discounted_items)
+            else:
+                cart[item] -= i
+
+            total += offer_price
 
     return total, cart
 
@@ -133,6 +138,7 @@ def checkout(skus):
         total = -1
 
     return total
+
 
 
 
