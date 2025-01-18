@@ -13,7 +13,7 @@ PRODUCT_PRICES = {
     "H": 10,
     "I": 35,
     "J": 60,
-    "K": 80,
+    "K": 70,
     "L": 90,
     "M": 15,
     "N": 40,
@@ -21,14 +21,14 @@ PRODUCT_PRICES = {
     "P": 50,
     "Q": 30,
     "R": 50,
-    "S": 30,
+    "S": 20,
     "T": 20,
     "U": 40,
     "V": 50,
     "W": 20,
-    "X": 90,
-    "Y": 10,
-    "Z": 50,
+    "X": 17,
+    "Y": 20,
+    "Z": 21,
 }
 
 DISCOUNT_OFFERS = {
@@ -49,6 +49,11 @@ FREEBIES_OFFERS = {
     "N": [3, "M", 1],
     "R": [3, "Q", 1],
     "U": [3, "U", 1],
+}
+
+ANIES_OFFERS = {
+    # 
+    ("S", "T", "X", "Y", "Z"): [3, 45],
 }
 
 
@@ -115,8 +120,6 @@ def checkout(skus):
 
     return total
 
-
-print(checkout("KKK"))
 
 
 
