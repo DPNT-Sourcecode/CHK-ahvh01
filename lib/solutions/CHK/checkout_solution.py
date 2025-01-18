@@ -1,5 +1,7 @@
 # noinspection PyUnusedLocal
 # skus = unicode string
+
+
 def checkout(skus):
     is_illegal = False
     products = {
@@ -9,13 +11,14 @@ def checkout(skus):
         "D": 15,
         " ": 0,
     }
-    total = -1
+
+    total = 0
     try:
         for item in skus:
             total += products[item]
 
     except Exception:
-        pass
+        total = -1
 
     return total
 
