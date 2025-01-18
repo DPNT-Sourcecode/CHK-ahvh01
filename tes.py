@@ -34,19 +34,24 @@ def checkout(skus):
             amount = amount
             while True:
                 # If feebie is valid
-                if (
-                    item in freebies_offers.keys()
-                    and amount // freebies_offers[item][0]
-                    # if products_prices left
-                    and processed_dict[freebies_offers[item][1]]
-                    // freebies_offers[item][2]
-                ):
-                    total += amount * products_prices[item]
-                    total -= (
-                        freebies_offers[item][2]
-                        * products_prices[freebies_offers[item][1]]
-                    )
-                    
+                if item in freebies_offers.keys():
+
+                    item_amount_required = freebies_offers[item][0]
+                    freebie_product = freebies_offers[item][1]]
+                    freebies_amount = freebies_offers[item][2]
+                    if (
+                        amount // item_amount_required
+                        and freebie_product_in_cart // freebies_amount
+                    ):
+                        total += amount * products_prices[item]
+                        total -= (
+                            freebies_offers[item][2]
+                            * products_prices[freebies_offers[item][1]]
+                        )
+                        processed_dict[freebies_offers[item][1]] -= freebies_offers[
+                            item
+                        ][2]
+
                 # If discount is appliable
                 elif (
                     item in discount_offers.keys()
@@ -66,6 +71,7 @@ def checkout(skus):
 
 
 print(checkout("AAAEEBB"))
+
 
 
 
