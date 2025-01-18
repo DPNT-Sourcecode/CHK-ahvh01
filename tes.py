@@ -52,9 +52,23 @@ FREEBIES_OFFERS = {
 }
 
 ANIES_OFFERS = {
-    # 
+    # Any of these: Amount, price
     ("S", "T", "X", "Y", "Z"): [3, 45],
 }
+
+
+def process_anies(cart, total):
+    for items_set, offer in FREEBIES_OFFERS.items():
+
+        discount_appliable = False
+        suitable_items_amount = 0
+        for item in list(items_set):
+            suitable_items_amount += cart[item]
+        
+        if suitable_items_amount // offer[3]:
+            
+
+    return total, cart
 
 
 def process_freebies(cart, total):
@@ -119,6 +133,7 @@ def checkout(skus):
         total = -1
 
     return total
+
 
 
 
