@@ -1,4 +1,5 @@
 from collections import defaultdict
+
 PRODUCT_PRICES = {
     "A": 50,
     "B": 30,
@@ -13,74 +14,65 @@ DISCOUNT_OFFERS = {
     "B": [[2, 45]],
 }
 
-freebies_offers = {
+FREEBIES_OFFERS = {
     # Product: Amount, Freebie_Product, Freebie_Amount
     "E": [2, "B", 1],
 }
+
+
+def process_freebies(cart, total):
+    for item, offer in FREEBIES_OFFERS.items():
+        if cart.get(item):
+            item_amount_required, freebie_product, freebies_amount = offer
+
+            if (
+                cart[item] // item_amount_required
+                and cart[freebie_product] // freebies_amount
+            ):
+                total += item_amount_required * PRODUCT_PRICES[cart[item]]
+                cart[freebie_product] -= freebies_amount
+
+    return total, cart
+
+
+def process_discounts(cart, total):
+    for item, offers in DISCOUNT_OFFERS.items():
+        if item in cart.keys():
+            for item_amount_required, discount_price in offers:
+                while True:
+                    if cart[item] // item_amount_required:
+                        cart[item] -= item_amount_required
+                        total += discount_price
+                    else:
+                        break
+    return total, cart
+
+
+def process_cart(cart, total):
+    for item, amount in cart.items():
+        total += amount * PRODUCT_PRICES[item]
+
 
 def checkout(skus):
     cart = defaultdict(lambda: 0)
     total = 0
 
-    def process_freebies(cart, total):
-        
-    
-        for item, offer in freebies_offers.items():
-            if cart.get(item):
-                item_amount_required, freebie_product, freebies_amount = offer
-                if (
-                    amount // item_amount_required
-                    and cart[freebie_product] // freebies_amount
-                ):
-                    total += amount * cart[item]
-                    cart[freebie_product] -= freebies_amount
-        
-        return total, cart
+    # try:
+    for i in skus:
+        cart[i] += 1
 
-    
-    def process_discounts(cart, total):        
-        for item, offers in DISCOUNT_OFFERS.items():
-            if item in cart.keys():
-                for item_amount_required, discount_price in offers:
-                    while True:
-                        if cart[item] // item_amount_required:
-                            cart[item] -= item_amount_required
-                            total += discount_price
-                        else:
-                            break
-        return total, cart
-                
-    def process_cart(cart, total):
-        for item, amount in cart.items()
-            total += amount * PRODUCT_PRICES[item]
-        
-        
-        
-        
+    total, cart = process_freebies(cart, total)
+    total, cart = process_discounts(cart, total)
+    total, cart = process_cart(cart, total)
 
-    try:
-        for i in skus:
-            cart[i] += 1
-        
-            
-        
-
-        for item in items_order:
-            amount = cart[item]
-
-        # ! PROCESS FREEBIES
-        total, cart = process_freebies(cart, total)
-        # ! PROCESS DISCOUNTS
-        total, cart = process_discounts(cart, total)
-        # ! PROCESS REST
-
-    except Exception as e:
-        total = -1
+    # except Exception as e:
+    #     total = -1
 
     return total
 
 
 print(checkout("EEB"))
+
 
 
 
