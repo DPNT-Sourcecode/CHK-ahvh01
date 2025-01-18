@@ -59,27 +59,31 @@ ANIES_OFFERS = {
 
 def process_anies(cart, total):
     for items_set, offer in ANIES_OFFERS.items():
-        discount_appliable = False
-
         # > IF discount can be applied
         target_items = set(cart.keys()).intersection(items_set)
 
+        suitable_items_amount = 0
         for item in list(target_items):
             suitable_items_amount += cart[item]
 
-        suitable_items_amount = 0
         offer_amount = offer[0]
         offer_price = offer[1]
         offer_applied_times = suitable_items_amount // offer_amount
-        for item in list(items_set):
-            discounted_items = cart[item] - i
-            if discounted_items < 0:
-                cart[item] = 0
-                i = abs(discounted_items)
-            else:
-                cart[item] -= i
 
-            total += offer_price
+        # ! GET ITEM ORDER FROM CHEEPEST TO MOST EXPENSIVE
+        for item in list(target_items):
+            suitable_items_amount += cart[item]
+        
+        while offer_applied_times > 0:
+            for item in list(items_set):
+                discounted_items = cart[item] - i
+                if discounted_items < 0:
+                    cart[item] = 0
+                    i = abs(discounted_items)
+                else:
+                    cart[item] -= i
+
+                total += offer_price
 
     return total, cart
 
@@ -129,20 +133,17 @@ def checkout(skus):
     cart = defaultdict(lambda: 0)
     total = 0
 
-    try:
-        for i in skus:
-            cart[i] += 1
+    for i in skus:
+        cart[i] += 1
 
-        total, cart = process_anies(cart, total)
-        total, cart = process_freebies(cart, total)
-        total, cart = process_discounts(cart, total)
-        total, cart = process_cart(cart, total)
-
-    except Exception as e:
-        total = -1
+    total, cart = process_anies(cart, total)
+    total, cart = process_freebies(cart, total)
+    total, cart = process_discounts(cart, total)
+    total, cart = process_cart(cart, total)
 
     return total
 
 
 print(checkout("STX"))
+
 
