@@ -8,6 +8,7 @@ PRODUCT_PRICES = {
     "C": 20,
     "D": 15,
     "E": 40,
+    "F": 10,
 }
 
 DISCOUNT_OFFERS = {
@@ -19,6 +20,7 @@ DISCOUNT_OFFERS = {
 FREEBIES_OFFERS = {
     # Product: Amount, Freebie_Product, Freebie_Amount
     "E": [2, "B", 1],
+    "F": [3, "F", 1],
 }
 
 
@@ -31,9 +33,15 @@ def process_freebies(cart, total):
                     cart[item] // item_amount_required
                     and cart[freebie_product] // freebies_amount
                 ):
-                    total += item_amount_required * PRODUCT_PRICES[item]
-                    cart[item] -= item_amount_required
-                    cart[freebie_product] -= freebies_amount
+                    if timem == "F":
+                        total += (
+                            item_amount_required - freebies_amount
+                        ) * PRODUCT_PRICES[item]
+                        cart[item] -= item_amount_required
+                    else:
+                        total += item_amount_required * PRODUCT_PRICES[item]
+                        cart[item] -= item_amount_required
+                        cart[freebie_product] -= freebies_amount
                 else:
                     break
 
@@ -75,3 +83,4 @@ def checkout(skus):
         total = -1
 
     return total
+
